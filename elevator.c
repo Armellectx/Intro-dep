@@ -5,9 +5,9 @@
 Elevator *create_elevator(int capacity, int currentFloor, PersonList *persons){
 
  Elevator *e = (Elevator*)malloc(sizeof(Elevator));
- e.capacity=capacity;
- e.currentFloor=currentFloor;
- e.*persons= *persons;
+ e->capacity=capacity;
+ e->currentFloor=currentFloor;
+ e->persons=persons;
 
 
 }
@@ -16,9 +16,9 @@ Elevator *create_elevator(int capacity, int currentFloor, PersonList *persons){
 Building *create_building(int nbFloor, Elevator *elevator, PersonList **waitingLists){
 
     Building *b = (Building*)malloc(sizeof(Building));
-    b.nbFloor=nbFloor;
-    b.*elevator=*elevator;
-    b.**waitingLists=**waitingLists;
+    b->nbFloor=nbFloor;
+    b->elevator=elevator;
+    b->waitingLists=waitingLists;
 
     return b;
 }
@@ -26,22 +26,21 @@ Building *create_building(int nbFloor, Elevator *elevator, PersonList **waitingL
 PersonList* exitElevator(Elevator *e){
 
 PersonList *sorties= (PersonList*)malloc(sizeof(PersonList)); //la liste des personnes sortantes qu'on renvoie
-liste=e.*persons; 
-p=*liste.*person; //on commence par regarder la première personne
+Person *p=e->persons->person; //on commence par regarder la première personne
 
 while(p!=NULL){//on parcours la liste des gens dans l'ascenseur
 
 
-if (p.dest==e.currentFloor){//on descend de l'ascenseur 
+if (p->dest==e->currentFloor){//on descend de l'ascenseur 
 
-*sorties.*next=*sorties;
-*sorties.*person=p;
+sorties->next=sorties;
+sorties->person=p;
 
-p=liste.*next;
+p=e->persons->next;
 }
-else { p=liste.*next;}
+else { p=e->persons->next;}
 
-} return *sorties;
+} return sorties;
 }
 
 
@@ -65,12 +64,12 @@ PersonList* enterElevator(Elevator *e, PersonList *list){
 
 
     PersonList *attente= (PersonList*)malloc(sizeof(PersonList));//la nouvelle liste d'attente à renvoyer
-    liste=b.*elevator.*waitingLists
-    p=*liste.*person; //on commence par regarder la premiere personne sur la liste
+    liste=b->elevator->waitingLists
+    p=liste->person; //on commence par regarder la premiere personne sur la liste
 
 
     while (p!=NULL){ //on parcours la liste d'attente 
-        if (EstPleine(*e)==false){
+        if (EstPleine(e)==false){
 
             e->persons->next=p; //on ajoute la personne à la cabine
             p=attente->next;
@@ -78,7 +77,7 @@ PersonList* enterElevator(Elevator *e, PersonList *list){
               
             else{attente->next=p;}//sinon: on l'ajoute à la nouvelle liste d'attente 
             }
-            return *attente;
+            return attente;
         }
 
 
